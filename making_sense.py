@@ -142,7 +142,7 @@ model.to('cuda')
 model.eval()
 
 if robust=='r':
-    with open("CATS/Robust_commonsense_test/{}.txt".format(test), "r") as f:
+    with open("./Robust_commonsense_test/{}.txt".format(test), "r") as f:
         file = f.readlines()
     num = len(file)
     count = 0
@@ -177,7 +177,7 @@ if robust=='r':
     print(test+' '+model_type+':-------------------')
     print (count/num)
 else:
-    with open("CATS/commonsense_ability_test/{}.txt".format(test), "r") as f:
+    with open("./commonsense_ability_test/{}.txt".format(test), "r") as f:
         file = f.readlines()
     num = len(file)
     count = 0
