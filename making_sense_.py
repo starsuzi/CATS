@@ -7,10 +7,10 @@ import math
 import logging
 import os
 import sys
-from sklearn.model_selection import train_test_split
+from temperature_scaling import ModelWithTemperature
 
 logging.basicConfig(level=logging.INFO)
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 def uni_predict(text, model, tokenizer):
     # Tokenized input
@@ -158,13 +158,21 @@ if robust=='r':
         for sentence in line:
             if not len(sentence)==1:
                 if model_type=='xlnet':
-                    score = xlnet_predict(sentence, model=model, tokenizer=tokenizer)
+                    score = xlnet_predict(sentence, model=model, tokenizer=tokenizer)                    
+                    model_cal = ModelWithTemperature(model)
+                    model_cal.set_temperature(sentence)
                 elif model_type=='bert':
                     score = bert_predict(sentence, model=model, tokenizer=tokenizer)
+                    model_cal = ModelWithTemperature(model)
+                    model_cal.set_temperature(sentence)
                 elif model_type=='roberta':
                     score = ro_predict(sentence, model=model, tokenizer=tokenizer)
+                    model_cal = ModelWithTemperature(model)
+                    model_cal.set_temperature(sentence)
                 else:
                     score = uni_predict(sentence, model=model, tokenizer=tokenizer)
+                    model_cal = ModelWithTemperature(model)
+                    model_cal.set_temperature(sentence)
                 score_list.append(score)
         #print(score_list)
         score_list_1 = score_list[:2]
